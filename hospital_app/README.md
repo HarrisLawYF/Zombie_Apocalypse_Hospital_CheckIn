@@ -3,4 +3,5 @@
 ## Running instructions
 - Setup node environment
 - issue "npm install"
-- issue "npm start"
+- issue "npm run build" for production environment or issue "npm start" for development environment
+

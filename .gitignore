@@ -8,6 +8,10 @@
 # dependencies
 /hospital_api/node_modules
 /hospital_app/node_modules
+
+/hospital_api/build
+/hospital_app/build
+
 /.pnp
 .pnp.js
 

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import '../css/App.css';
 import background from "../assets/hospital.jpeg";
-import { Button, List, Header, Icon, Divider, Segment, Grid } from 'semantic-ui-react'
+import { List, Header, Icon, Divider, Segment, Grid } from 'semantic-ui-react'
 import spinner from '../assets/spin.gif'
-var Router = require("react-router");
 
 export default class Suggestions extends Component {
     state = {
@@ -13,7 +12,7 @@ export default class Suggestions extends Component {
 
     componentDidMount() {
         this.setState({isVisible: "block"})
-        axios.post('http://localhost:3001/waitlist', {
+        axios.post(process.env.REACT_APP_SERVER_URL+`/waitlist`, {
             name: this.props.match.params.name,
             illness: this.props.match.params.illness,
             pain:this.props.match.params.pain

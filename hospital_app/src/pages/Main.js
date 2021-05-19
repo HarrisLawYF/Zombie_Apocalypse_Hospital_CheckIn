@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import background from "../assets/hospital.jpeg";
 import { Button, List, Header, Icon } from 'semantic-ui-react'
 import spinner from '../assets/spin.gif'
-
 import axios from "axios";
 
 export default class Main extends Component {
@@ -14,7 +13,7 @@ export default class Main extends Component {
 
     componentDidMount() {
         this.setState({isVisible: "block"})
-        axios.get(`http://localhost:3001/illnesses`)
+        axios.get(process.env.REACT_APP_SERVER_URL+`/illnesses`)
         .then(res => {
             const illnesses = res.data;
             this.setState({ illnesses: illnesses });
