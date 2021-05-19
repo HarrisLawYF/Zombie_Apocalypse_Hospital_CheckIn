@@ -1,0 +1,27 @@
+{
+  "name": "hospitalapi",
+  "version": "1.0.0",
+  "description": "This is an API service for zombie apocalypse's hospital check-in",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./api/test/HospitalsController.js"
+  },
+  "author": "Harris Law",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
+    "mongo-unit": "^2.0.1",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lodash": "^4.17.21",
+    "mocha-prepare": "^0.1.0",
+    "mongoose": "^5.12.9",
+    "sinon": "^10.0.0"
+  }
+}
