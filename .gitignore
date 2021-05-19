@@ -1,7 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.idea
+/hospital_api/.idea
+/hospital_app/.idea
 # dependencies
-/node_modules
+/hospital_api/node_modules
+/hospital_app/node_modules
 /.pnp
 .pnp.js
 
