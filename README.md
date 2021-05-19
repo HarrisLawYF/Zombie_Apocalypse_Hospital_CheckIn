@@ -1,4 +1,12 @@
-# Instruction to run the app
+# Instruction for Webapp
+
+## Running instructions
+- Setup node environment
+- issue "npm install"
+- issue "npm run build" for production environment or issue "npm start" for development environment
+
+
+# Instruction for API server
 
 ## Running instructions
 - Setup node environment
@@ -15,4 +23,3 @@
 - POST /waitlist
     - Body: {"name": STRING, "illness": NUMBER, illness ID, "pain": NUMBER, 0 to 4}
     - Response: [{"patientCount": NUMBER,"levelOfPain": NUMBER,"averageProcessTime": NUMBER,"hospital": STRING,"waitTime": NUMBER}]
-

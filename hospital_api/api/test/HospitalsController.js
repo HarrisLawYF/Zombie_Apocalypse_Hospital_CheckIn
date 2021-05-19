@@ -84,7 +84,7 @@ describe('Get Wait Time Test', () => {
             });
     });
 
-    it('should save no patient', function(done) {
+    it('should save no patient with wrong pain level', function(done) {
         mock_db.resolves({data: expectedDBWrong});
         chai.request(server)
             .get('/illnesses')
@@ -95,8 +95,19 @@ describe('Get Wait Time Test', () => {
             });
     });
 
+    it('should save no patient with db error', function(done) {
+        mock_db.rejects({err: "db error"});
+        chai.request(server)
+            .get('/illnesses')
+            .end((err, res) => {
+                assert(res.status, 200);
+                assert(res.body,{ err: "Pain level is not correct: 5"});
+                done();
+            });
+    });
+
     it('should get no list', function(done) {
-        mock_db.resolves({data: expectedDBWrong});
+        mock_db.resolves({data: expectedDBCorrect});
         mock_util.rejects({err: "connection error"});
         chai.request(server)
             .get('/illnesses')
