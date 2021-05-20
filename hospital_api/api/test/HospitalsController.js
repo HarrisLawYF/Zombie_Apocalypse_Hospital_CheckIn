@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    patient = require('../models/Patient'),
     sinon = require('sinon'),
     chai = require('chai'),
     chaiHttp = require('chai-http'),
@@ -13,8 +12,8 @@ var assert = require('assert'),
 
 prepare(done => mongoUnit.start()
     .then(testMongoUrl => {
-        console.log('fake mongo is started: ', testMongoUrl)
-        process.env.MONGO_URL = testMongoUrl
+        console.log('fake mongo is started: ', testMongoUrl);
+        process.env.MONGO_URL = testMongoUrl;
         done()
     }))
 
@@ -57,9 +56,9 @@ describe('Get Illnesses Test', () => {
 describe('Get Wait Time Test', () => {
     let mock_util;
     let mock_db;
-    var expectedDBCorrect = {"name": "David", "illness": 2, "pain": 4, "created": Date.now};
+    var expectedDBCorrect = {"name": "David", "illness": 2, "pain": 2, "created": Date.now};
     var expectedDBWrong = {"name": "David", "illness": 2, "pain": 5, "created": Date.now};
-    var expectedUtil = {2:[{"name": "Hospital1", "waitTime": 325, "patientCount": 13, "averageProcessTime": 25}]}
+    var expectedUtil = {2:[{"id":2,"name": "Hospital1", "waitTime": 325, "patientCount": 13, "averageProcessTime": 25}]}
     beforeEach(function() {
         chai.use(chaiHttp);
         mongoUnit.initDb(mongoUrl, testData);
@@ -73,47 +72,55 @@ describe('Get Wait Time Test', () => {
     });
 
     it('should get correct list', function(done) {
-        mock_db.resolves({data: expectedDBCorrect});
-        mock_util.resolves({data: expectedUtil});
+        mock_db.resolves(expectedDBCorrect);
+        mock_util.resolves(expectedUtil);
         chai.request(server)
-            .get('/illnesses')
+            .post('/waitlist')
+            .set('content-type', 'application/json')
+            .send(expectedDBCorrect)
             .end((err, res) => {
                 assert(res.status, 200);
-                assert(res.body, [{"name": "Hospital1", "waitTime": 325, "patientCount": 13, "averageProcessTime": 25}]);
+                assert(res.body, expectedUtil[2][0]);
                 done();
             });
     });
 
     it('should save no patient with wrong pain level', function(done) {
-        mock_db.resolves({data: expectedDBWrong});
+        mock_db.rejects({err:"Pain level is not correct: 5"});
         chai.request(server)
-            .get('/illnesses')
+            .post('/waitlist')
+            .set('content-type', 'application/json')
+            .send(expectedDBWrong)
             .end((err, res) => {
                 assert(res.status, 200);
-                assert(res.body,{ err: "Pain level is not correct: 5"});
+                assert.ok(res.body.err === "Pain level is not correct: 5");
                 done();
             });
     });
 
     it('should save no patient with db error', function(done) {
-        mock_db.rejects({err: "db error"});
+        mock_db.rejects({err:"db error"});
         chai.request(server)
-            .get('/illnesses')
+            .post('/waitlist')
+            .set('content-type', 'application/json')
+            .send(expectedDBCorrect)
             .end((err, res) => {
                 assert(res.status, 200);
-                assert(res.body,{ err: "Pain level is not correct: 5"});
+                assert.ok(res.body.err === "db error");
                 done();
             });
     });
 
     it('should get no list', function(done) {
-        mock_db.resolves({data: expectedDBCorrect});
-        mock_util.rejects({err: "connection error"});
+        mock_db.resolves(expectedDBCorrect);
+        mock_util.rejects({err:"connection error"});
         chai.request(server)
-            .get('/illnesses')
+            .post('/waitlist')
+            .set('content-type', 'application/json')
+            .send(expectedDBCorrect)
             .end((err, res) => {
                 assert(res.status, 200);
-                assert(res.body,{ err: "connection error"});
+                assert.ok(res.body.err === "connection error");
                 done();
             });
     });

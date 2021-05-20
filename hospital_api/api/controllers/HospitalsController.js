@@ -10,7 +10,7 @@ exports.get_illnesses = function(req, res) {
         let illnesses = result.data._embedded.illnesses;
         res.json(illnesses);
     }, function(err) {
-        console.log("Get illnesses error: " + err.message);
+        console.log("Get illnesses error: " + err.err);
         res.send(err);
     });
 };
@@ -21,7 +21,7 @@ exports.get_hospitals = function(req, res) {
         let hospitals = result.data._embedded.hospitals;
         res.json(hospitals);
     }, function(err) {
-        console.log("Get hospitals error: " + err.message);
+        console.log("Get hospitals error: " + err.err);
         res.send(err);
     });
 };
@@ -31,7 +31,7 @@ exports.get_patients = function(req, res) {
     db.query_patients().then(function(patients) {
         res.json(patients);
     }, function(err) {
-        console.log("Get patients error: " + err.message);
+        console.log("Get patients error: " + err.err);
         res.send(err);
     });
 };
@@ -41,7 +41,7 @@ exports.get_patient = function(req, res) {
     db.query_patient(req.params.patient_id).then(function(patient) {
         res.json(patient);
     }, function(err) {
-        console.log("Get a patient error: " + err.message);
+        console.log("Get a patient error: " + err.err);
         res.send(err);
     });
 };
@@ -52,11 +52,11 @@ exports.get_wait_list = function(req, res) {
         util.get_average_wait_time().then(function(result) {
             res.json(result[patient.pain])
         }, function(err) {
-            console.log("Get illnesses error: " + err.message);
+            console.log("Get illnesses error: " + err.err);
             res.send(err);
         });
     }, function(err) {
-        console.log("Save a patient error: " + err.message);
+        console.log("Save a patient error: " + err.err);
         res.send(err);
     });
 };
